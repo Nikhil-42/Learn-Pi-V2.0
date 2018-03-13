@@ -1,0 +1,16 @@
+15/6/2017 15:00
+
+Current Updates
+-Added GUI "front end"
+-Added Test Tab's "back end"
+
+Future Updates
+-Create Login & Records Tab "back end"
+
+Bug
+-Cannot locate record logs without running through eclipse
+
+Author:
+	Name 		: Nikhil Iyer
+	Age  		: 13
+	Birthday	: 7/10/2003
