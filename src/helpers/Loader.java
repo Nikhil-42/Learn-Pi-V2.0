@@ -34,7 +34,7 @@ public class Loader {
     		file.createNewFile();
     		BufferedWriter bw = new BufferedWriter(new FileWriter(file));
     		now = LocalDateTime.now();
-    		bw.write("First log in at" + dtf.format(now));
+    		bw.write("First log in at " + dtf.format(now));
     		bw.close();
     	} catch (IOException e) {
     		e.printStackTrace();
@@ -46,22 +46,12 @@ public class Loader {
     }
 
     public static void setRecord(int rec, String name) {
-        String oldData = "\n", record = Integer.toString(rec);
-        List<String> oldList;
-
-        RecordFile file = new RecordFile(name);
-        oldList = file.getAllData();
-        oldData = oldList.stream().map((s) -> (s + "\n")).reduce(oldData, String::concat);
-
-        try {
-            try (BufferedWriter bw = new BufferedWriter(new FileWriter(file))) {
-                now = LocalDateTime.now();
-                bw.write(record + "|" + dtf.format(now) + oldData);
-            }
-        } catch (IOException e) {
-
-        }
+        write(rec, new RecordFile(name));
     }
+
+	public static void addAttempt(int digits, String name) {
+		write(digits, new LogFile(name));
+	}
 
     public static boolean testForRecord(String name) {
         return (new RecordFile(name).exists());
@@ -77,5 +67,23 @@ public class Loader {
 
     public static boolean isUser(String name) throws IOException {
         return testForRecord(name);
+    }
+    
+    private static void write(int num, File toWrite) {
+    	String oldData = "\n",
+        		digits = Integer.toString(num);
+        List<String> oldList;
+
+        oldList = ((LogFile) toWrite).getAllData();
+        oldData = oldList.stream().map((s) -> (s + "\n")).reduce(oldData, String::concat);
+
+        try {
+            try (BufferedWriter bw = new BufferedWriter(new FileWriter(toWrite))) {
+                now = LocalDateTime.now();
+                bw.write(digits + "|" + dtf.format(now) + oldData);
+            }
+        } catch (IOException e) {
+
+        }
     }
 }

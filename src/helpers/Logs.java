@@ -126,14 +126,6 @@ public class Logs {
 	}
 
 	public static void setUser(String name) {
-		try {
-			if (!Loader.isUser(name)) {
-				Loader.createRecordFile(name);
-			}
-		} catch (IOException ex) {
-			Logger.getLogger(Logs.class.getName()).log(Level.SEVERE, null, ex);
-		}
-
 		username = name.toUpperCase();
 		loggedIn = true;
 	}
@@ -146,6 +138,7 @@ public class Logs {
 	 */
 	public static boolean record(String name, int rec) {
 		boolean isRec = isRecord(name, rec);
+		Loader.addAttempt(rec, name);
 		if (isRec) {
 			Loader.setRecord(rec, name);
 		}

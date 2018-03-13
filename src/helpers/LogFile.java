@@ -26,7 +26,10 @@ public class LogFile extends File {
 			latest = br.readLine();
 			data = loadData();
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
+			if (extension.equals(Loader.LOGSUF))
+				Loader.createLogFile(name);
+			else if (extension.equals(Loader.RECORDSUF))
+				Loader.createRecordFile(name);
 			e.printStackTrace();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

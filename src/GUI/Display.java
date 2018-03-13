@@ -12,6 +12,14 @@ import java.io.IOException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JPanel;
+import javax.swing.JProgressBar;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.SwingConstants;
+import javax.swing.JToggleButton;
+import javax.swing.JScrollPane;
+import javax.swing.ScrollPaneConstants;
 
 /**
  *
@@ -506,6 +514,49 @@ public class Display extends javax.swing.JFrame {
                 .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 424, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
+        
+        LogsPanel = new JPanel();
+        jTabbedPane1.addTab("New tab", null, LogsPanel, null);
+        
+        progressBar = new JProgressBar();
+        progressBar.setFocusable(false);
+        LogsPanel.add(progressBar);
+        
+        comboBox = new JComboBox<String>();
+        LogsPanel.add(comboBox);
+        
+        label = new JLabel();
+        label.setText("Sort by:");
+        label.setHorizontalAlignment(SwingConstants.CENTER);
+        LogsPanel.add(label);
+        
+        toggleButton = new JToggleButton();
+        toggleButton.setText("Advanced");
+        LogsPanel.add(toggleButton);
+        
+        toggleButton_1 = new JToggleButton();
+        toggleButton_1.setToolTipText("Toggle off to see only your records.");
+        toggleButton_1.setText("All Users");
+        LogsPanel.add(toggleButton_1);
+        
+        label_1 = new JLabel();
+        label_1.setText("Date");
+        label_1.setHorizontalAlignment(SwingConstants.CENTER);
+        LogsPanel.add(label_1);
+        
+        label_2 = new JLabel();
+        label_2.setText("Time");
+        label_2.setHorizontalAlignment(SwingConstants.CENTER);
+        LogsPanel.add(label_2);
+        
+        label_3 = new JLabel();
+        label_3.setText("Record");
+        label_3.setHorizontalAlignment(SwingConstants.CENTER);
+        LogsPanel.add(label_3);
+        
+        scrollPane = new JScrollPane();
+        scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        LogsPanel.add(scrollPane);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -712,5 +763,15 @@ public class Display extends javax.swing.JFrame {
     private javax.swing.JButton submitButton;
     private org.jdesktop.swingx.JXLabel timesXLabel;
     private javax.swing.JLabel userReadoutLabel;
+    private JPanel LogsPanel;
+    private JProgressBar progressBar;
+    private JComboBox<String> comboBox;
+    private JLabel label;
+    private JToggleButton toggleButton;
+    private JToggleButton toggleButton_1;
+    private JLabel label_1;
+    private JLabel label_2;
+    private JLabel label_3;
+    private JScrollPane scrollPane;
     // End of variables declaration//GEN-END:variables
 }
