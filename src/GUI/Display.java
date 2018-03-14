@@ -128,6 +128,7 @@ public class Display extends JFrame {
         timesXLabel2 = new JXLabel();
         recordsXLabel2 = new JXLabel();
         logsReadoutPanel2 = new JPanel();
+        lockedToggleButton = new JToggleButton();
 
         results.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         results.setResizable(false);
@@ -555,6 +556,14 @@ public class Display extends JFrame {
                 LogsPanelComponentShown(evt);
             }
         });
+        
+        lockedToggleButton.setText("All Users");
+        lockedToggleButton.setToolTipText("Toggle off to see only your records.");
+        lockedToggleButton.addItemListener(new ItemListener() {
+            public void itemStateChanged(ItemEvent evt) {
+                lockedToggleButtonItemStateChanged(evt);
+            }
+        });
 
         jProgressBar2.setFocusable(false);
 
@@ -611,7 +620,6 @@ public class Display extends JFrame {
 
         GroupLayout LogsPanelLayout = new GroupLayout(LogsPanel);
         LogsPanel.setLayout(LogsPanelLayout);
-        JToggleButton fill = new JToggleButton();
 		LogsPanelLayout.setHorizontalGroup(
             LogsPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
             .addGroup(LogsPanelLayout.createSequentialGroup()
@@ -623,7 +631,7 @@ public class Display extends JFrame {
                             .addComponent(sortingComboBox2, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel9, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(advancedToggleButton2, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(fill , GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(lockedToggleButton , GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(LogsPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
                             .addGroup(LogsPanelLayout.createSequentialGroup()
@@ -642,7 +650,7 @@ public class Display extends JFrame {
                 .addGroup(LogsPanelLayout.createParallelGroup(GroupLayout.Alignment.TRAILING)
                     .addGroup(LogsPanelLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel6, GroupLayout.PREFERRED_SIZE, 49, GroupLayout.PREFERRED_SIZE)
-                        .addComponent(fill)
+                        .addComponent(lockedToggleButton)
                         .addComponent(jLabel8, GroupLayout.PREFERRED_SIZE, 49, GroupLayout.PREFERRED_SIZE))
                     .addComponent(jLabel7, GroupLayout.PREFERRED_SIZE, 50, GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
@@ -679,14 +687,25 @@ public class Display extends JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    protected void LogsPanelComponentShown(ComponentEvent evt) {
-		// TODO Auto-generated method stub
-		
-	}
+    private void LogsPanelComponentShown(ComponentEvent evt) {// GEN-FIRST:event_RecordsPanelComponentShown
+        if (loggedIn) {
+        	LogsPanel.setEnabled(true);
+        } else {
+        	LogsPanel.setEnabled(false);
+        }
+        datesXLabel2.setLineWrap(true);
+        timesXLabel2.setLineWrap(true);
+        recordsXLabel2.setLineWrap(true);
+        inName = username;
+        mode = "NORMAL";
+        advanced = false;
+        updateLogsReadouts();
+    }
 
 	private void advancedToggleButtonItemStateChanged(ItemEvent evt) {//GEN-FIRST:event_advancedToggleButtonItemStateChanged
         advanced = advancedToggleButton.isSelected();
-        updateLogsReadouts(datesXLabel, timesXLabel, recordsXLabel);
+        updateRecordsReadouts();
+        updateLogsReadouts();
     }//GEN-LAST:event_advancedToggleButtonItemStateChanged
 
     private void sortingComboBoxPopupMenuWillBecomeInvisible(PopupMenuEvent evt) {//GEN-FIRST:event_sortingComboBoxPopupMenuWillBecomeInvisible
@@ -695,7 +714,7 @@ public class Display extends JFrame {
             mode = "NORMAL";
         else if (selected == 1)
         	mode = "REVERSE";
-        updateLogsReadouts(datesXLabel, timesXLabel, recordsXLabel);
+        updateRecordsReadouts();
     }//GEN-LAST:event_sortingComboBoxPopupMenuWillBecomeInvisible
 
     private void nextButtonActionPerformed(ActionEvent evt) {// GEN-FIRST:event_nextButtonActionPerformed
@@ -740,7 +759,7 @@ public class Display extends JFrame {
         inName = username;
         mode = "NORMAL";
         advanced = false;
-        updateLogsReadouts(datesXLabel, timesXLabel, recordsXLabel);
+        updateRecordsReadouts();
     }// GEN-LAST:event_RecordsPanelComponentShown
 
     private void LoginPanelComponentShown(ComponentEvent evt) {// GEN-FIRST:event_LoginPanelComponentShown
@@ -757,8 +776,12 @@ public class Display extends JFrame {
         } else {
         	inName = username;
         }
-        updateLogsReadouts(datesXLabel, timesXLabel, recordsXLabel);
+        updateRecordsReadouts();
     }// GEN-LAST:event_allUsersToggleButtonItemStateChanged
+
+    private void lockedToggleButtonItemStateChanged(ItemEvent evt) {
+    	
+    }
 
     private void submitButtonActionPerformed(ActionEvent evt) {// GEN-FIRST:event_submitActionPerformed
         Teacher.test(piTextField.getText());
@@ -826,18 +849,18 @@ public class Display extends JFrame {
         });
     }
     
-    private List<String> getLogsDisplay() {
-    	if (!loggedIn) {
-    		inName = "WORLD";
-    	}
-    	return parseLogs(inName, mode, advanced);
+    private void updateLogsReadouts() {
+    	List<String> logs = parseLogs(inName, mode, advanced, false);
+        datesXLabel2.setText(logs.get(0));
+        timesXLabel2.setText(logs.get(1));
+        recordsXLabel2.setText(logs.get(2));
     }
     
-    private void updateLogsReadouts(JXLabel dates, JXLabel times, JXLabel records) {
-    	List<String> logs = getLogsDisplay();
-        dates.setText(logs.get(0));
-        times.setText(logs.get(1));
-        records.setText(logs.get(2));
+    public void updateRecordsReadouts() {
+    	List<String> logs = parseLogs(inName, mode, advanced, true);
+        datesXLabel.setText(logs.get(0));
+        timesXLabel.setText(logs.get(1));
+        recordsXLabel.setText(logs.get(2));
     }
 
     private String generateFriendlyUsername() {
@@ -894,5 +917,6 @@ public class Display extends JFrame {
     private JScrollPane jScrollPane2;
     private JXLabel datesXLabel2, timesXLabel2, recordsXLabel2;
     private JPanel logsReadoutPanel2;
+    private JToggleButton lockedToggleButton;
     // End of variables declaration//GEN-END:variables
 }

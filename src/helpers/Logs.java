@@ -24,14 +24,21 @@ public class Logs {
 	}
 
 	public static List<String> parseLogs(String name, String mode, boolean advanced) {
+		return parseLogs(name, mode, advanced, true);
+	}
+	
+	public static List<String> parseLogs(String name, String mode, boolean advanced, boolean isRecLoad) {
 		if (!loggedIn) {
 			name = "WORLD";
 		}
 		List<String> records, dates, times, logs;
 		String allRecords, allDates, allTimes;
 		int currentIndex;
-		RecordFile rf;
-		rf = new RecordFile(name);
+		LogFile rf;
+		if (isRecLoad)
+			rf = new RecordFile(name);
+		else
+			rf = new LogFile(name);
 		records = new ArrayList<>();
 		dates = new ArrayList<>();
 		times = new ArrayList<>();
