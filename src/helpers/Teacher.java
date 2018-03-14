@@ -15,8 +15,9 @@ public class Teacher {
 	public static void test(String input) {
 
 		int i;
-		if (input.length() > pi.length()) {
+		if (input.length()+1 > pi.length()) {
 			pi = Pi.pi((input.length() + 1)).toPlainString();
+			System.out.println("Limit exceeded\nCalculating next digits");
 		}
 		allGood = false;
 
@@ -52,23 +53,23 @@ public class Teacher {
 		System.out.println(results);
 		return results;
 	}
-        
-        public static void setRecords(JXLabel out) {
-            if (Logs.loggedIn) {
-	            int oldRecord = Logs.getRecord(username);
-	            if (Logs.record(username, Teacher.numberReached)) {
-	                out.setText("You beat your previous record of " + oldRecord + " digits!");
-	            } else {
-	                out.setText(
-	                        "You were just " + (Logs.getRecord(username) - Teacher.numberReached + 1) + " digits away from beating your record of " + oldRecord + ".");
-	            }
-	            if (Logs.record("WORLD", Teacher.numberReached)) {
-	                out.setText(out.getText() + "\nYou set a new local record.");
-	            }
-            } else {
-            	out.setText("You aren't logged in.");
-            }
-        }
+
+	public static void setRecords(JXLabel out) {
+		if (Logs.loggedIn) {
+			int oldRecord = Logs.getRecord(username);
+			if (Logs.record(username, Teacher.numberReached)) {
+				out.setText("You beat your previous record of " + oldRecord + " digits!");
+			} else {
+				out.setText("You were just " + (Logs.getRecord(username) - Teacher.numberReached + 1)
+						+ " digits away from beating your record of " + oldRecord + ".");
+			}
+			if (Logs.record("WORLD", Teacher.numberReached)) {
+				out.setText(out.getText() + "\nYou set a new local record.");
+			}
+		} else {
+			out.setText("You aren't logged in.");
+		}
+	}
 
 	public final static class Pi {
 
