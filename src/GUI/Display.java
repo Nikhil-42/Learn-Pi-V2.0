@@ -10,6 +10,7 @@ import static helpers.Logs.parseLogs;
 import static helpers.Logs.setUser;
 import static helpers.Logs.username;
 
+import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.EventQueue;
@@ -576,7 +577,7 @@ public class Display extends JFrame {
         recordsXLabel2.setVerticalAlignment(SwingConstants.TOP);
         recordsXLabel2.setTextAlignment(org.jdesktop.swingx.JXLabel.TextAlignment.CENTER);
 
-        jScrollPane2.setViewportView(logsReadoutPanel);
+        jScrollPane2.setViewportView(logsReadoutPanel2);
 
         jLabel6.setHorizontalAlignment(SwingConstants.CENTER);
         jLabel6.setText("Date");
@@ -610,7 +611,8 @@ public class Display extends JFrame {
 
         GroupLayout LogsPanelLayout = new GroupLayout(LogsPanel);
         LogsPanel.setLayout(LogsPanelLayout);
-        LogsPanelLayout.setHorizontalGroup(
+        JToggleButton fill = new JToggleButton();
+		LogsPanelLayout.setHorizontalGroup(
             LogsPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
             .addGroup(LogsPanelLayout.createSequentialGroup()
                 .addContainerGap()
@@ -621,6 +623,8 @@ public class Display extends JFrame {
                             .addComponent(sortingComboBox2, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel9, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(advancedToggleButton2, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(fill , GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(LogsPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
                             .addGroup(LogsPanelLayout.createSequentialGroup()
                                 .addComponent(jLabel6, GroupLayout.PREFERRED_SIZE, 150, GroupLayout.PREFERRED_SIZE)
@@ -629,14 +633,16 @@ public class Display extends JFrame {
                                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jLabel7, GroupLayout.PREFERRED_SIZE, 91, GroupLayout.PREFERRED_SIZE)
                                 .addGap(0, 0, Short.MAX_VALUE))
-                            .addComponent(jScrollPane2, GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))))));
-                
+                            .addComponent(jScrollPane2, GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))))
+                .addContainerGap())
+        );
         LogsPanelLayout.setVerticalGroup(
             LogsPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
             .addGroup(LogsPanelLayout.createSequentialGroup()
                 .addGroup(LogsPanelLayout.createParallelGroup(GroupLayout.Alignment.TRAILING)
                     .addGroup(LogsPanelLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel6, GroupLayout.PREFERRED_SIZE, 49, GroupLayout.PREFERRED_SIZE)
+                        .addComponent(fill)
                         .addComponent(jLabel8, GroupLayout.PREFERRED_SIZE, 49, GroupLayout.PREFERRED_SIZE))
                     .addComponent(jLabel7, GroupLayout.PREFERRED_SIZE, 50, GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
