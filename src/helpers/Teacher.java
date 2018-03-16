@@ -63,7 +63,7 @@ public class Teacher {
 				out.setText("You were just " + (Logs.getRecord(username) - Teacher.numberReached + 1)
 						+ " digits away from beating your record of " + oldRecord + ".");
 			}
-			if (Logs.record("WORLD", Teacher.numberReached)) {
+			if (Logs.record(Loader.ALLUSERSNAME, Teacher.numberReached)) {
 				out.setText(out.getText() + "\nYou set a new local record.");
 			}
 		} else {

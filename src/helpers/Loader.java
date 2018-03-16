@@ -12,7 +12,7 @@ public class Loader {
 
     public static DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm:ss");
     public static LocalDateTime now;
-    public static final String LOGSPATH = "src/data/", RECORDSUF = "_record.txt", LOGSUF = "_log.txt";
+    public static final String LOGSPATH = "src/data/", RECORDSUF = "_record.txt", LOGSUF = "_log.txt", ALLUSERSNAME = "WORLD";
 
     public static void createRecordFile(String name) {
         File file = new File(LOGSPATH + name.toUpperCase() + RECORDSUF);
@@ -34,7 +34,7 @@ public class Loader {
     		file.createNewFile();
     		BufferedWriter bw = new BufferedWriter(new FileWriter(file));
     		now = LocalDateTime.now();
-    		bw.write("First log in at " + dtf.format(now));
+    		bw.write("First_login|" + dtf.format(now));
     		bw.close();
     	} catch (IOException e) {
     		e.printStackTrace();
@@ -42,7 +42,7 @@ public class Loader {
     }
 
     public static void setRecord(int rec) {
-        setRecord(rec, "WORLD");
+        setRecord(rec, ALLUSERSNAME);
     }
 
     public static void setRecord(int rec, String name) {

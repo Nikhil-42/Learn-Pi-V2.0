@@ -16,7 +16,7 @@ public class Logs {
 	}
 
 	public static boolean isRecord(int rec) {
-		return isRecord("WORLD", rec);
+		return isRecord(Loader.ALLUSERSNAME, rec);
 	}
 
 	public static List<String> parseLogs(String name) {
@@ -29,7 +29,7 @@ public class Logs {
 	
 	public static List<String> parseLogs(String name, String mode, boolean advanced, boolean isRecLoad) {
 		if (!loggedIn) {
-			name = "WORLD";
+			name = Loader.ALLUSERSNAME;
 		}
 		List<String> records, dates, times, logs;
 		String allRecords, allDates, allTimes;
@@ -106,18 +106,26 @@ public class Logs {
 		String out, temp;
 		if (iend != -1) {
 			temp = s.substring(iend + 1);
+			try {
 			if (!advanced) {
 				hour = Integer.parseInt(temp.substring(0, 2));
-				if (hour > 12) {
+				if (hour > 11) {
 					hour -= 12;
 					temp = Integer.toString(hour) + temp.substring(2, 5);
-					temp += " pm";
+					temp += " PM";
+				} else if (hour == 12) {
+					temp = Integer.toString(hour) + temp.substring(2, 5);
+					temp += " PM";
 				} else {
 					temp = temp.substring(0, 5);
-					temp += " am";
+					temp += " AM";
 				}
 			}
 			out = temp;
+			} catch (Exception e) {
+				out = "---";
+				e.printStackTrace();
+			}
 		} else {
 			out = "---";
 		}

@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.swing.AbstractButton;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.GroupLayout;
 import javax.swing.ImageIcon;
@@ -107,9 +108,9 @@ public class Display extends JFrame {
         jProgressBar1 = new JProgressBar();
         jScrollPane1 = new JScrollPane();
         logsReadoutPanel = new JPanel();
-        datesXLabel = new org.jdesktop.swingx.JXLabel();
-        timesXLabel = new org.jdesktop.swingx.JXLabel();
-        recordsXLabel = new org.jdesktop.swingx.JXLabel();
+        datesXLabel = new JXLabel();
+        timesXLabel = new JXLabel();
+        recordsXLabel = new JXLabel();
         jLabel2 = new JLabel();
         jLabel3 = new JLabel();
         jLabel4 = new JLabel();
@@ -442,7 +443,7 @@ public class Display extends JFrame {
         recordsXLabel.setText("see this");
         recordsXLabel.setVerticalAlignment(SwingConstants.TOP);
         recordsXLabel.setTextAlignment(org.jdesktop.swingx.JXLabel.TextAlignment.CENTER);
-
+        //TODO
         GroupLayout logsReadoutPanelLayout = new GroupLayout(logsReadoutPanel);
         logsReadoutPanel.setLayout(logsReadoutPanelLayout);
         logsReadoutPanelLayout.setHorizontalGroup(
@@ -557,13 +558,14 @@ public class Display extends JFrame {
             }
         });
         
-        lockedToggleButton.setText("All Users");
-        lockedToggleButton.setToolTipText("Toggle off to see only your records.");
+        lockedToggleButton.setText("Lock logs");
+        lockedToggleButton.setToolTipText("TODO");
         lockedToggleButton.addItemListener(new ItemListener() {
             public void itemStateChanged(ItemEvent evt) {
                 lockedToggleButtonItemStateChanged(evt);
             }
         });
+        lockedToggleButton.setEnabled(false);
 
         jProgressBar2.setFocusable(false);
 
@@ -585,6 +587,29 @@ public class Display extends JFrame {
         recordsXLabel2.setText("see this");
         recordsXLabel2.setVerticalAlignment(SwingConstants.TOP);
         recordsXLabel2.setTextAlignment(org.jdesktop.swingx.JXLabel.TextAlignment.CENTER);
+        
+        GroupLayout logsReadoutPanel2Layout = new GroupLayout(logsReadoutPanel2);
+        logsReadoutPanel2.setLayout(logsReadoutPanel2Layout);
+        logsReadoutPanel2Layout.setHorizontalGroup(
+            logsReadoutPanel2Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            .addGroup(logsReadoutPanel2Layout.createSequentialGroup()
+                .addComponent(datesXLabel2, GroupLayout.PREFERRED_SIZE, 150, GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(timesXLabel2, GroupLayout.PREFERRED_SIZE, 101, GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(recordsXLabel2, GroupLayout.PREFERRED_SIZE, 91, GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(83, Short.MAX_VALUE))
+        );
+        logsReadoutPanel2Layout.setVerticalGroup(
+            logsReadoutPanel2Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            .addGroup(GroupLayout.Alignment.TRAILING, logsReadoutPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(logsReadoutPanel2Layout.createParallelGroup(GroupLayout.Alignment.TRAILING)
+                    .addComponent(datesXLabel2, GroupLayout.DEFAULT_SIZE, 233, Short.MAX_VALUE)
+                    .addComponent(timesXLabel2, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(recordsXLabel2, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(16, 16, 16))
+        );
 
         jScrollPane2.setViewportView(logsReadoutPanel2);
 
@@ -688,11 +713,6 @@ public class Display extends JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void LogsPanelComponentShown(ComponentEvent evt) {// GEN-FIRST:event_RecordsPanelComponentShown
-        if (loggedIn) {
-        	LogsPanel.setEnabled(true);
-        } else {
-        	LogsPanel.setEnabled(false);
-        }
         datesXLabel2.setLineWrap(true);
         timesXLabel2.setLineWrap(true);
         recordsXLabel2.setLineWrap(true);
@@ -703,18 +723,20 @@ public class Display extends JFrame {
     }
 
 	private void advancedToggleButtonItemStateChanged(ItemEvent evt) {//GEN-FIRST:event_advancedToggleButtonItemStateChanged
-        advanced = advancedToggleButton.isSelected();
+        advanced = ((JToggleButton) evt.getSource()).isSelected();
         updateRecordsReadouts();
         updateLogsReadouts();
     }//GEN-LAST:event_advancedToggleButtonItemStateChanged
 
     private void sortingComboBoxPopupMenuWillBecomeInvisible(PopupMenuEvent evt) {//GEN-FIRST:event_sortingComboBoxPopupMenuWillBecomeInvisible
-        int selected = sortingComboBox.getSelectedIndex();
+        int selected = ((JComboBox<String>) evt.getSource()).getSelectedIndex();
         if(selected == 0)
             mode = "NORMAL";
         else if (selected == 1)
         	mode = "REVERSE";
         updateRecordsReadouts();
+        updateLogsReadouts();
+        
     }//GEN-LAST:event_sortingComboBoxPopupMenuWillBecomeInvisible
 
     private void nextButtonActionPerformed(ActionEvent evt) {// GEN-FIRST:event_nextButtonActionPerformed
@@ -772,7 +794,7 @@ public class Display extends JFrame {
 
     private void allUsersToggleButtonItemStateChanged(ItemEvent evt) {// GEN-FIRST:event_allUsersToggleButtonItemStateChanged
         if (allUsersToggleButton.isSelected()) {
-            inName = "WORLD";
+            inName = Loader.ALLUSERSNAME;
         } else {
         	inName = username;
         }
@@ -780,7 +802,7 @@ public class Display extends JFrame {
     }// GEN-LAST:event_allUsersToggleButtonItemStateChanged
 
     private void lockedToggleButtonItemStateChanged(ItemEvent evt) {
-    	
+    	updateLogsReadouts();
     }
 
     private void submitButtonActionPerformed(ActionEvent evt) {// GEN-FIRST:event_submitActionPerformed
@@ -851,6 +873,10 @@ public class Display extends JFrame {
     
     private void updateLogsReadouts() {
     	List<String> logs = parseLogs(inName, mode, advanced, false);
+    	System.out.println("Dates: " + logs.get(0));
+    	System.out.println("Times: " + logs.get(1));
+    	System.out.println("Records: " + logs.get(2));
+    	
         datesXLabel2.setText(logs.get(0));
         timesXLabel2.setText(logs.get(1));
         recordsXLabel2.setText(logs.get(2));
