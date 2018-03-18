@@ -2,6 +2,7 @@ package helpers;
 
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -46,15 +47,27 @@ public class Loader {
     }
 
     public static void setRecord(int rec, String name) {
-        write(rec, new RecordFile(name));
+        try {
+			write(rec, new RecordFile(name));
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
     }
 
 	public static void addAttempt(int digits, String name) {
-		write(digits, new LogFile(name));
+		try {
+			write(digits, new LogFile(name));
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
 	}
 
     public static boolean testForRecord(String name) {
-        return (new RecordFile(name).exists());
+        try {
+			return (new RecordFile(name).exists());
+		} catch (FileNotFoundException e) {
+			return false;
+		}
     }
 
     public static boolean testForFile(String fileName, String filePath) {

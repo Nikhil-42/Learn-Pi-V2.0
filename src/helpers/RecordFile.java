@@ -1,8 +1,10 @@
 package helpers;
 
-public class RecordFile extends LogFile{
+import java.io.FileNotFoundException;
+
+public class RecordFile extends LogFile {
     
-    public RecordFile(String name) {
+    public RecordFile(String name) throws FileNotFoundException {
 		super(name, Loader.RECORDSUF);
 	}
 

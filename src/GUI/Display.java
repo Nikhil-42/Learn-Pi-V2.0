@@ -67,6 +67,7 @@ public class Display extends JFrame {
      * Creates new form Display
      */
     public Display() {
+		setResizable(false);
         initComponents();
     }
 

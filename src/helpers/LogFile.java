@@ -15,11 +15,11 @@ public class LogFile extends File {
     private String latest;
     private List<String> data;
 
-    public LogFile(String name) {
+    public LogFile(String name) throws FileNotFoundException {
         this(name, Loader.LOGSUF);
     }
     
-    public LogFile(String name, String extension) {
+    public LogFile(String name, String extension) throws FileNotFoundException {
     	super(Loader.LOGSPATH + name.toUpperCase() + extension);
         try {
 			br = new BufferedReader(new FileReader(this));
@@ -31,6 +31,7 @@ public class LogFile extends File {
 			else if (extension.equals(Loader.RECORDSUF))
 				Loader.createRecordFile(name);
 			e.printStackTrace();
+			throw new FileNotFoundException("Exception indicating a log file is missing or uncreated.");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

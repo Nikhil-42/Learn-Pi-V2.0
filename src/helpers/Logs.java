@@ -1,5 +1,6 @@
 package helpers;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,7 +13,12 @@ public class Logs {
 	public static String username;
 
 	public static boolean isRecord(String name, int rec) {
-		return rec > Integer.parseInt(parseRecord(new RecordFile(name).getRecordData()));
+		try {
+			return rec > Integer.parseInt(parseRecord(new RecordFile(name).getRecordData()));
+		} catch (NumberFormatException | FileNotFoundException e) {
+			e.printStackTrace();
+			return false;
+		}
 	}
 
 	public static boolean isRecord(int rec) {
@@ -34,11 +40,17 @@ public class Logs {
 		List<String> records, dates, times, logs;
 		String allRecords, allDates, allTimes;
 		int currentIndex;
-		LogFile rf;
-		if (isRecLoad)
-			rf = new RecordFile(name);
-		else
-			rf = new LogFile(name);
+		LogFile rf = null;
+		for (int i = 1; !(rf != null); i++)
+			try {
+				if (isRecLoad)
+					rf = new RecordFile(name);
+				else
+					rf = new LogFile(name);
+				break;
+			} catch (FileNotFoundException e) {
+				System.out.println("Try number " + i + "to generate the File.");
+			}
 		records = new ArrayList<>();
 		dates = new ArrayList<>();
 		times = new ArrayList<>();
@@ -133,7 +145,13 @@ public class Logs {
 	}
 	
 	public static int getRecord(String name) {
-		RecordFile rf = new RecordFile(name);
+		RecordFile rf = null;
+		while (!(rf != null))
+			try {
+				rf = new RecordFile(name);
+			} catch (FileNotFoundException e) {
+				
+			}
 		return rf.getRecord();
 	}
 
